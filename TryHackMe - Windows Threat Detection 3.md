@@ -23,7 +23,7 @@ You already learned that USB worms and phishing attachments can "infect" the m
 ##### Attacks Without C2
 In some cases, C2 is not needed at all. For example, threat actors can type their commands directly in the RDP session after an RDP breach. Since this method becomes unavailable as soon as RDP is closed or secured, most threat actors choose to still set up a C2 immediately after the breach.
 
-![[Pasted image 20250725221618.png]]
+![Pasted image 20250725221618.png](assets/windows-threat-detection-3/Pasted%20image%2020250725221618.png)
 
 ##### Simplest C2
 For other Initial Access methods, threat actors can't simply use RDP every time they need to run a command, so they need some process that connects back to the attackers and waits for their commands 24/7. In the simplest case, the phishing attachment will be that process and establish the **Command and Control channel**, like on the [CobaltStrike C2](https://www.cobaltstrike.com/) screenshot below.
@@ -47,7 +47,7 @@ For this task, access the attached VM and detect the C2 setup using Sysmon�
 
 Data stealer infections usually have a very short lifespan: they breach the victim, collect the data, exfiltrate it, and exit - all within minutes. However, for most other attacks, maintaining access to the victim for days or even months after the Initial Access is vital. The tactic of maintaining reliable, long-term access to the target that can survive reboots and password changes is called [Persistence](https://attack.mitre.org/tactics/TA0003/) - a big and interesting topic that you will discover soon.
 
-![[Pasted image 20250725224210.png]]
+![Pasted image 20250725224210.png](assets/windows-threat-detection-3/Pasted%20image%2020250725224210.png)
 
 ##### Persisting via RDP
 Many Windows breaches happen because of the exposed service: RDP with a weak password, a vulnerable mail server, or a misconfigured web app. For such scenarios, the threat actors can access the machine via the same exposed service over and over again until the vulnerability is fixed. Still, threat actors often deploy an additional Persistence method, for example:
@@ -57,7 +57,7 @@ Many Windows breaches happen because of the exposed service: RDP with a weak p
 
 Let's focus on the second method now and see how you or threat actors can manage users on Windows. The first option is to use the graphical utility by searching for "Computer Management" or by launching `lusrmgr.msc`. The second option is to use a command line, like in the example below:
 
-![[Pasted image 20250725230018.png]]
+![Pasted image 20250725230018.png](assets/windows-threat-detection-3/Pasted%20image%2020250725230018.png)
 
 ##### Detecting Backdoored Users
 It's time to go back to the Security event logs! Every user creation event is logged as Security event ID **4720,** which you explored in the Windows Logging for SOC room. Since threat actors can be very creative with naming the backdoored accounts, you should not rely just on detecting suspicious names like "hacker" but rather investigate:
@@ -74,7 +74,7 @@ Next, a new user by itself won't give the attacker much, as the default user per
 
 Lastly, in more advanced cases, threat actors may simply reset the password of some old or unused account and use it instead of creating a new one. You can detect it with Security event ID **4724**. In summary, below you can see how the described event IDs look like:
 
-![[Pasted image 20250725231149.png]]
+![Pasted image 20250725231149.png](assets/windows-threat-detection-3/Pasted%20image%2020250725231149.png)
 
 **TASK 2**
 - How many times did the threat actor fail to log in to the Administrator?
@@ -107,7 +107,7 @@ Threat actors can create their own malicious services that will run the specifie
 2. Detect service creation via Security event ID **4697** or System event ID [7045](https://www.manageengine.com/products/active-directory-audit/kb/system-events/event-id-7045.html)
 3. Detect suspicious processes with a `services.exe` parent process
 
-![[Pasted image 20250725232510.png]]
+![Pasted image 20250725232510.png](assets/windows-threat-detection-3/Pasted%20image%2020250725232510.png)
 
 ##### Detecting Tasks
 
@@ -119,7 +119,7 @@ Unlike services, scheduled tasks are very easy to configure and hide, which is w
 2. Detect and analyze scheduled task creation events via Security event ID **4698**
 3. Detect suspicious processes with a `svchost.exe [...] -s Schedule` parent
 
-![[Pasted image 20250725232618.png]]
+![Pasted image 20250725232618.png](assets/windows-threat-detection-3/Pasted%20image%2020250725232618.png)
 
 **TASK 3**
 - Which Windows service was created to persist the Nessie malware?
@@ -148,7 +148,7 @@ Or for all users: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp
 ```
 The startup folder is not a common choice for legitimate programs, so usually, the folder is empty. Still, threat actors often put their malware there ([Lumma Stealer example](https://www.trendmicro.com/pl_pl/research/25/a/lumma-stealers-github-based-delivery-via-mdr.html#:~:text=We%20also%20observed%20persistence%20being%20established%20through%20the%20Startup%20folder)), and you can detect it by monitoring file creation events (Sysmon Event ID **11**) inside the Startup Folder. Also, note that the programs launched via startup will have an explorer.exe parent, so it may be hard to differentiate them from legitimate user activity or attacks you learned in [Windows Threat Detection 1](https://tryhackme.com/room/windowsthreatdetection1):
 
-![[Pasted image 20250725234519.png]]
+![Pasted image 20250725234519.png](assets/windows-threat-detection-3/Pasted%20image%2020250725234519.png)
 
 ##### Detecting Run Keys
 Run key persistence is very similar to the startup folder; they even share a single MITRE [technique](https://attack.mitre.org/techniques/T1547/001/)! The only major difference is how the entries are added there. Instead of just copying the program to the startup folder, you need to create a new value in the "Run" Windows registry and put the path to your program there:
@@ -158,7 +158,7 @@ HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOr for all users:
 
 To view the "Run" entries, you can launch the `regedit.exe` or search for "Registry Editor" and go to the path shown above. To detect the malicious entry from logs, you can monitor registry change events (Sysmon Event ID **13**) affecting the Run keys:
 
-![[Pasted image 20250725234621.png]]
+![Pasted image 20250725234621.png](assets/windows-threat-detection-3/Pasted%20image%2020250725234621.png)
 
 **TASK 4**
 - What is the parent process image of the "Odin" malware?
@@ -188,7 +188,7 @@ Let's take a closer look at the third point. In most cases, a Windows network me
 ##### Threat Detection Recap
 Active Directory and ransomware are complex topics, but all complex attacks start from a simple single breach. In the Windows Threat Detection rooms, you explored how breaches begin, how the attackers steal data, and how they remain undetected for years. You are now ready to use the acquired knowledge to detect and stop the attacks before ransomware causes a disastrous [Impact](https://attack.mitre.org/tactics/TA0040/), preferably right after Initial Access. Here is a quick recap of what you've learned so far (highlighted in yellow):
 
-![[Pasted image 20250725235313.png]]
+![Pasted image 20250725235313.png](assets/windows-threat-detection-3/Pasted%20image%2020250725235313.png)
 
 **TASK 5**
 - What is the biggest threat to most corporate Windows networks?
