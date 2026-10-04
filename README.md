@@ -89,6 +89,7 @@ Detailed penetration testing and CTF writeups spanning reconnaissance, initial f
 - [Support](TryHackMe%20-%20Support.md)
 - [Team](TryHackMe%20-Team.md)
 - [Tech_Supp0rt 1](TryHackMe%20-%20Tech_Supp0rt%201.md)
+- [The O365 Intrusion](TryHackMe%20-%20The%20O365%20Intrusion.md)
 - [TheServerFromHell](TryHackMe%20-%20TheServerFromHell.md)
 - [Thompson](TryHackMe%20-%20Thompson.md)
 - [tomghost](TryHackMe%20-%20tomghost.md)
