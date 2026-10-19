@@ -1,7 +1,7 @@
 
 
 ##### Initial Access
-######Comb through the ADSelfService Plus logs to begin retracing the attacker’s steps. At what time (ISO 8601 format) was Dean's password changed and their account taken over by the attacker?
+###### Comb through the ADSelfService Plus logs to begin retracing the attacker’s steps. At what time (ISO 8601 format) was Dean's password changed and their account taken over by the attacker?
 `2024-03-24T11:10:22`
 ###### Shortly after Dean's account was compromised, the attacker created a new administrator account. What is the name of the new account that was created?
 `voltyp-admin`
