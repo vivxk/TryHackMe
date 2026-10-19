@@ -4,14 +4,14 @@ A comprehensive, organized collection of TryHackMe challenge writeups, education
 
 ## 📁 Repository Structure
 
-`	ext
+```text
 TryHackMe/
 ├── walkthroughs/       # Educational technique modules, theory notes, and tool PDFs
 ├── writeups/           # Challenge solutions, CTF boxes, and IR investigations
 │   └── AI Odyssey CTF/ # Dedicated AI/LLM security challenge series
 ├── assets/             # Attached diagrams and screenshots
 └── README.md           # Central index and navigation dashboard
-`
+```
 
 ## 📑 Table of Contents
 
