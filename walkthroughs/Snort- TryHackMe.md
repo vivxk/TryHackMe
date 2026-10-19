@@ -92,7 +92,7 @@ check for validity of Snort config file located in ==/etc/snort.conf==
 
 ### Snort Rules:
 **General Structure:**
-![Snort Rule Structure](assets/snort/Pasted%20image%2020220326120855.png)
+![Snort Rule Structure](../assets/snort/Pasted%20image%2020220326120855.png)
 
 Example Rules:
 **IP Filtering** - `alert icmp 192.168.1.56 any <> any any  (msg: "ICMP Packet Found"; sid: 100001; rev:1;)`
